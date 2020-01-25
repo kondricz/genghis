@@ -1,11 +1,16 @@
-import { devLogger } from '../../utils';
-import { production, development, test, environment } from '../../constants';
+import { Request, Response, NextFunction } from 'express';
 
-const dev = (req, res, next) => {
-  devLogger('PLACE VARIABLES IN RES.LOCALS', {
-    params: req.params,
-    body: req.body
-  });
+import { devLogger } from '../../utils';
+import { EnvTypes, environment } from '../../constants/constants';
+
+const development = (req: Request, res: Response, next: NextFunction): void => {
+  devLogger(
+    'PLACE VARIABLES IN RES.LOCALS',
+    JSON.stringify({
+      params: req.params,
+      body: req.body,
+    })
+  );
   res.locals.body = {};
   if (Object.keys(req.params).length) {
     Object.keys(req.params).forEach(key => {
@@ -20,11 +25,14 @@ const dev = (req, res, next) => {
   return next();
 };
 
-const prod = (req, res, next) => {
-  devLogger('PLACE VARIABLES IN RES.LOCALS', {
-    params: req.params,
-    body: req.body
-  });
+const production = (req: Request, res: Response, next: NextFunction): void => {
+  devLogger(
+    'PLACE VARIABLES IN RES.LOCALS',
+    JSON.stringify({
+      params: req.params,
+      body: req.body,
+    })
+  );
   res.locals.body = {};
   if (Object.keys(req.params).length) {
     Object.keys(req.params).forEach(key => {
@@ -40,9 +48,9 @@ const prod = (req, res, next) => {
 };
 
 const middleware = {
-  [production]: prod,
-  [development]: dev,
-  [test]: dev
+  [EnvTypes.PROD]: production,
+  [EnvTypes.DEV]: development,
+  [EnvTypes.TEST]: development,
 };
 
 export default middleware[environment];

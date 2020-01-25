@@ -1,22 +1,24 @@
-import { devLogger } from '../../utils';
-import { production, development, test, environment } from '../../constants';
+import { Request, Response } from 'express';
 
-const dev = (req, res, next) => {
+import { devLogger } from '../../utils';
+import { EnvTypes, environment } from '../../constants/constants';
+
+const development = (_req: Request, res: Response): Response => {
   const { httpReply } = res.locals;
   devLogger('SEND BACK THE RESOURCE', httpReply);
   return res.status(200).send(httpReply);
 };
 
-const prod = (req, res, next) => {
+const production = (_req: Request, res: Response): Response => {
   const { httpReply } = res.locals;
   devLogger('SEND BACK THE RESOURCE', httpReply);
   return res.status(200).send(httpReply);
 };
 
 const middleware = {
-  [production]: prod,
-  [development]: dev,
-  [test]: dev
+  [EnvTypes.PROD]: production,
+  [EnvTypes.DEV]: development,
+  [EnvTypes.TEST]: development,
 };
 
 export default middleware[environment];
