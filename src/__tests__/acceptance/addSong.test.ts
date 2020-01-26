@@ -3,6 +3,8 @@ import { testApp as app } from '../../server';
 import { setupMongo, teardownMongo } from '../helpers';
 import { exampleSongCorrect, exampleSongFaulty } from '../payloads';
 
+import { SuccessMessages } from '../../constants/responses';
+
 describe('#SONG-CONTROLLER - ADD', () => {
   beforeAll(async () => {
     await setupMongo();
@@ -13,7 +15,7 @@ describe('#SONG-CONTROLLER - ADD', () => {
       .post('/songs')
       .send(exampleSongCorrect);
     expect(status).toEqual(200);
-    expect(body.message).toEqual('DOCUMENT HAS CREATED SUCCESSFULLY');
+    expect(body.message).toEqual(SuccessMessages.DOCUMENT_CREATED);
     expect(body.data).toBeDefined();
   });
 

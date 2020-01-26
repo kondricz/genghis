@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { body, validationResult } from 'express-validator/check';
 
-import { EnvTypes, environment } from '../../constants/constants';
+import { EnvTypes, environment } from '../../constants/environments';
+import { ErrorMessages } from '../../constants/responses';
 import { errorHandler } from '../../utils/index';
 
 const conditions = [
@@ -27,10 +28,8 @@ const conditions = [
 const development = (req: Request, res: Response, next: NextFunction): void | Response => {
   try {
     validationResult(req).throw();
-    console.log('<<< VALIDATION PASSED >>>');
     return next();
   } catch (err) {
-    console.log('<<< VALDIATION FAILED >>>');
     return errorHandler(res, 403, JSON.stringify(err.array()));
   }
 };
@@ -40,7 +39,7 @@ const production = (req: Request, res: Response, next: NextFunction): void | Res
     validationResult(req).throw();
     return next();
   } catch (err) {
-    return errorHandler(res, 403, 'dont be too smart');
+    return errorHandler(res, 403, ErrorMessages.VALIDATION);
   }
 };
 

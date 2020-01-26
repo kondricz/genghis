@@ -1,2 +1,2 @@
-export const SONGS = '/songs';
-export const SINGLE_SONG = '/song/:songID';
+export const SONGS = 'songs';
+export const SINGLE_SONG = 'song/:songID';

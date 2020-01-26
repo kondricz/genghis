@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { devLogger } from '../../utils';
-import { EnvTypes, environment } from '../../constants/constants';
+import { EnvTypes, environment } from '../../constants/environments';
 
 const development = (_req: Request, res: Response): Response => {
   const { httpReply } = res.locals;

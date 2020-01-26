@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 
 import Song from '../../model/song';
 import { devLogger, errorHandler } from '../../utils';
-import { EnvTypes, environment } from '../../constants/constants';
+import { EnvTypes, environment } from '../../constants/environments';
+import { SuccessMessages, ErrorMessages } from '../../constants/responses';
 
 const development = async (
   _req: Request,
@@ -14,15 +15,15 @@ const development = async (
   try {
     const doc = await Song.findOneAndUpdate({ _id: songID }, body, { new: true });
     if (!doc) {
-      return errorHandler(res, 404, `${songID} could not have been found.`);
+      return errorHandler(res, 404, songID + ErrorMessages.DOCUMENT_NOT_FOUND);
     }
     res.locals.httpReply = {
-      message: `${songID} has been updated`,
+      message: songID + SuccessMessages.DOCUMENT_UPDATED,
       data: doc,
     };
     return next();
   } catch (err) {
-    return errorHandler(res, 404, `${songID} could not have been found.`);
+    return errorHandler(res, 404, songID + ErrorMessages.DOCUMENT_NOT_FOUND);
   }
 };
 
@@ -36,15 +37,15 @@ const production = async (
   try {
     const doc = await Song.findOneAndUpdate({ _id: songID }, body, { new: true });
     if (!doc) {
-      return errorHandler(res, 404, `${songID} could not have been found.`);
+      return errorHandler(res, 404, songID + ErrorMessages.DOCUMENT_NOT_FOUND);
     }
     res.locals.httpReply = {
-      message: `${songID} has been updated`,
+      message: songID + SuccessMessages.DOCUMENT_UPDATED,
       data: doc,
     };
     return next();
   } catch (err) {
-    return errorHandler(res, 404, `${songID} could not have been found.`);
+    return errorHandler(res, 404, songID + ErrorMessages.DOCUMENT_NOT_FOUND);
   }
 };
 

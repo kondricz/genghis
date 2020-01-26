@@ -3,7 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 
 import Song from '../../model/song';
 import { devLogger, errorHandler } from '../../utils';
-import { EnvTypes, environment } from '../../constants/constants';
+import { EnvTypes, environment } from '../../constants/environments';
+import { SuccessMessages } from '../../constants/responses';
 
 const development = async (
   _req: Request,
@@ -19,7 +20,7 @@ const development = async (
   try {
     const doc = await song.save();
     res.locals.httpReply = {
-      message: 'DOCUMENT HAS CREATED SUCCESSFULLY',
+      message: SuccessMessages.DOCUMENT_CREATED,
       data: doc._id,
     };
     return next();
@@ -42,7 +43,7 @@ const production = async (
   try {
     const doc = await song.save();
     res.locals.httpReply = {
-      message: 'DOCUMENT HAS CREATED SUCCESSFULLY',
+      message: SuccessMessages.DOCUMENT_CREATED,
       data: doc._id,
     };
     return next();

@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 
 import Song from '../../model/song';
 import { devLogger, errorHandler } from '../../utils';
-import { EnvTypes, environment } from '../../constants/constants';
+import { EnvTypes, environment } from '../../constants/environments';
+import { SuccessMessages, ErrorMessages } from '../../constants/responses';
 
 const development = async (
   _req: Request,
@@ -13,10 +14,10 @@ const development = async (
   try {
     const doc = await Song.find();
     if (!doc) {
-      return errorHandler(res, 404, 'There are no songs');
+      return errorHandler(res, 404, ErrorMessages.NO_DOCUMENTS);
     }
     res.locals.httpReply = {
-      message: 'All songs have been retrieved',
+      message: SuccessMessages.ALL_DOCUMENTS_RETRIEVED,
       data: doc,
     };
     return next();
@@ -34,10 +35,10 @@ const production = async (
   try {
     const doc = await Song.find();
     if (!doc) {
-      return errorHandler(res, 404, 'There are no songs');
+      return errorHandler(res, 404, ErrorMessages.NO_DOCUMENTS);
     }
     res.locals.httpReply = {
-      message: 'All songs have been retrieved',
+      message: SuccessMessages.ALL_DOCUMENTS_RETRIEVED,
       data: doc,
     };
     return next();

@@ -24,5 +24,5 @@ export const setupMongo = async (): Promise<any> => {
 export const teardownMongo = async (): Promise<any> => {
   console.log('disconnecting from mongodb memory server for this test suit...');
   await Song.deleteMany({});
-  return mongoose.disconnect();
+  await mongoose.disconnect();
 };

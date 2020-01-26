@@ -10,6 +10,8 @@ import {
 
 import Song from '../../model/song';
 
+import { ErrorMessages, SuccessMessages } from '../../constants/responses';
+
 describe('#SONG-CONTROLLER - UPDATE SINGLE', () => {
   const songID = new mongoose.Types.ObjectId();
   const incorrectSongID = 'thissongdoesntexist';
@@ -24,7 +26,7 @@ describe('#SONG-CONTROLLER - UPDATE SINGLE', () => {
       .send(exampleSongUpdatedCorrect);
 
     expect(status).toEqual(200);
-    expect(body.message).toEqual(`${songID} has been updated`);
+    expect(body.message).toEqual(songID + SuccessMessages.DOCUMENT_UPDATED);
     expect(body.data.title).toEqual(exampleSongUpdatedCorrect.title);
   });
 
@@ -34,7 +36,7 @@ describe('#SONG-CONTROLLER - UPDATE SINGLE', () => {
       .send(exampleSongUpdatedCorrect);
 
     expect(status).toEqual(404);
-    expect(body.data).toEqual(`${incorrectSongID} could not have been found.`);
+    expect(body.data).toEqual(incorrectSongID + ErrorMessages.DOCUMENT_NOT_FOUND);
   });
 
   it('Should give an error updating with a non-valid property', async () => {

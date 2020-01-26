@@ -1,4 +1,4 @@
-import { environment, EnvTypes } from '../constants/constants';
+import { environment, EnvTypes } from '../constants/environments';
 
 export default (operation: string, params: string): void | null =>
   environment !== EnvTypes.DEV

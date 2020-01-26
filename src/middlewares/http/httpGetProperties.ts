@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { devLogger } from '../../utils';
-import { EnvTypes, environment } from '../../constants/constants';
+import { EnvTypes, environment } from '../../constants/environments';
 
 const development = (req: Request, res: Response, next: NextFunction): void => {
   devLogger(
