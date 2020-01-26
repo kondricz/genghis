@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as mongoose from 'mongoose';
 import * as bodyParser from 'body-parser';
+import * as rateLimiter from 'express-rate-limit';
 
 import { EnvTypes, environment } from './constants/constants';
 
@@ -13,14 +14,22 @@ const PORT: { [key: string]: number } = {
   [EnvTypes.PROD]: 8080,
 };
 
-export const app = express();
+const app = express();
 
 if (environment !== EnvTypes.TEST) {
   mongoose.connect('mongoURL', { useNewUrlParser: true });
+  app.use(
+    rateLimiter({
+      windowMs: 15 * 60 * 1000,
+      max: 100,
+    })
+  );
 }
+
 app.use(bodyParser.json());
 
 const withHttpWrapper = (middlewares: express.RequestHandler[]): express.RequestHandler[] => [
+  ...MW.validateUserInput,
   MW.httpGetProperties,
   ...middlewares,
   MW.httpFormReply,
@@ -37,8 +46,6 @@ app
   .get(withHttpWrapper([CTR.getSingleSong]))
   .delete(withHttpWrapper([CTR.deleteSong]));
 
-app.use(MW.httpError);
-
 app.listen(PORT[environment], () =>
   console.log(
     `Server initialized succesfully.
@@ -47,3 +54,5 @@ app.listen(PORT[environment], () =>
     `
   )
 );
+
+export const testApp = app;

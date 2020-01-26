@@ -1,8 +1,12 @@
 import * as request from 'supertest';
 import * as mongoose from 'mongoose';
-import { app } from '../../server';
+import { testApp as app } from '../../server';
 import { setupMongo, teardownMongo } from '../helpers';
-import { exampleSongCorrect, exampleSongUpdatedCorrect } from '../payloads';
+import {
+  exampleSongCorrect,
+  exampleSongUpdatedCorrect,
+  exampleSongUpdatedFaulty,
+} from '../payloads';
 
 import Song from '../../model/song';
 
@@ -24,19 +28,23 @@ describe('#SONG-CONTROLLER - UPDATE SINGLE', () => {
     expect(body.data.title).toEqual(exampleSongUpdatedCorrect.title);
   });
 
-  /*it('Should give an error updating a non-existing item in the database', async () => {
-    const res = await request(app).delete(`/song/${incorrectSongID}`);
+  it('Should give an error updating a non-existing item in the database', async () => {
+    const { status, body } = await request(app)
+      .put(`/song/${incorrectSongID}`)
+      .send(exampleSongUpdatedCorrect);
 
-    expect(res.status).toEqual(500);
-    expect(res.body.message).toEqual(`${incorrectSongID} could not have been found.`);
-  });*/
+    expect(status).toEqual(404);
+    expect(body.data).toEqual(`${incorrectSongID} could not have been found.`);
+  });
 
-  /*it('Should give an error updating with a non-valid property', async () => {
-    const res = await request(app).delete(`/song/${incorrectSongID}`);
+  it('Should give an error updating with a non-valid property', async () => {
+    const { status, body } = await request(app)
+      .put(`/song/${songID}`)
+      .send(exampleSongUpdatedFaulty);
 
-    expect(res.status).toEqual(500);
-    expect(res.body.message).toEqual(`${incorrectSongID} could not have been found.`);
-  });*/
+    expect(status).toEqual(403);
+    expect(body.data).toBeDefined();
+  });
 
   afterAll(async () => {
     await teardownMongo();

@@ -1,5 +1,5 @@
 import * as request from 'supertest';
-import { app } from '../../server';
+import { testApp as app } from '../../server';
 import { setupMongo, teardownMongo } from '../helpers';
 import { exampleSongCorrect, exampleSongFaulty } from '../payloads';
 
@@ -17,12 +17,14 @@ describe('#SONG-CONTROLLER - ADD', () => {
     expect(body.data).toBeDefined();
   });
 
-  /*it('Should give an error adding an item to the database, if schema is wrong', async () => {
-    const res = await request(app)
+  it('Should give an error adding an item to the database, if schema is wrong', async () => {
+    const { status, body } = await request(app)
       .post('/songs')
       .send(exampleSongFaulty);
-    expect(res.status).toEqual(500);
-  });*/
+
+    expect(status).toEqual(403);
+    expect(body.data).toBeDefined();
+  });
 
   afterAll(async () => {
     await teardownMongo();

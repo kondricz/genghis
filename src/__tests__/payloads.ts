@@ -9,6 +9,10 @@ export const exampleSongUpdatedCorrect = {
   title: 'The morning of the updated tests',
 };
 
+export const exampleSongUpdatedFaulty = {
+  genre: 12421421,
+};
+
 export const exampleSongFaulty = {
   title: 'The morning of the tests',
   author: 'Koppany Kondricz',

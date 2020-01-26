@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@types/express": "^4.17.2",
+    "@types/express-rate-limit": "^3.3.3",
     "@types/mongoose": "^5.5.43",
     "babel-cli": "^6.26.0",
     "babel-core": "7.0.0-bridge.0",
@@ -46,6 +47,8 @@
     "body-parser": "^1.19.0",
     "cross-env": "7.0.0",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.0.0",
+    "express-validator": "^6.3.1",
     "mongoose": "^5.8.9",
     "nodemon": "^2.0.2"
   }

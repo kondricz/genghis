@@ -1,6 +1,6 @@
 import * as request from 'supertest';
 import * as mongoose from 'mongoose';
-import { app } from '../../server';
+import { testApp as app } from '../../server';
 import { setupMongo, teardownMongo } from '../helpers';
 import { exampleSongCorrect } from '../payloads';
 
@@ -31,6 +31,14 @@ describe('#SONG-CONTROLLER - GET ALL', () => {
 
     expect(status).toEqual(200);
     expect(body.data).toHaveLength(3);
+  });
+
+  it('If no items, should return an empty array', async () => {
+    await Song.deleteMany({});
+    const { status, body } = await request(app).get(`/songs`);
+
+    expect(status).toEqual(200);
+    expect(body.data).toEqual([]);
   });
 
   afterAll(async () => {

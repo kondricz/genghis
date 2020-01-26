@@ -3,14 +3,20 @@ import { Request, Response, ErrorRequestHandler } from 'express';
 import { devLogger } from '../../utils';
 import { EnvTypes, environment } from '../../constants/constants';
 
-const development = (err: ErrorRequestHandler, _req: Request, res: Response): Response => {
+interface CustomError extends ErrorRequestHandler {
+  status: number;
+  data: string;
+}
+
+const development = (err: CustomError, _req: Request, res: Response): Response => {
   devLogger('SEND BACK ERROR', JSON.stringify(err));
-  return res.status(500).send(err);
+  console.log('<<< ERROR MW BEING CALLED >>>');
+  return res.status(err.status || 500).send(err.data);
 };
 
-const production = (err: ErrorRequestHandler, _req: Request, res: Response): Response => {
+const production = (err: CustomError, _req: Request, res: Response): Response => {
   devLogger('SEND BACK ERROR', JSON.stringify(err));
-  return res.status(500).send(err);
+  return res.status(err.status || 500).send(err.data);
 };
 
 const middleware = {

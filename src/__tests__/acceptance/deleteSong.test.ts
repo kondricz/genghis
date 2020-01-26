@@ -1,6 +1,6 @@
 import * as request from 'supertest';
 import * as mongoose from 'mongoose';
-import { app } from '../../server';
+import { testApp as app } from '../../server';
 import { setupMongo, teardownMongo } from '../helpers';
 import { exampleSongCorrect } from '../payloads';
 
@@ -21,12 +21,12 @@ describe('#SONG-CONTROLLER - DELETE', () => {
     expect(body.message).toEqual(`${songID} has been removed`);
   });
 
-  /*it('Should give an error deleting a non-existing item in the database', async () => {
+  it('Should give an error deleting a non-existing item in the database', async () => {
     const res = await request(app).delete(`/song/${incorrectSongID}`);
 
-    expect(res.status).toEqual(500);
-    expect(res.body.message).toEqual(`${incorrectSongID} could not have been found.`);
-  });*/
+    expect(res.status).toEqual(404);
+    expect(res.body.data).toEqual(`${incorrectSongID} could not have been found.`);
+  });
 
   afterAll(async () => {
     await teardownMongo();
