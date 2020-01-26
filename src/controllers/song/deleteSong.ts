@@ -20,7 +20,9 @@ const development = async (_req: Request, res: Response, next: NextFunction): Pr
     };
     return next();
   } catch (err) {
-    return next(err);
+    return next({
+      message: `${songID} could not have been found.`,
+    });
   }
 };
 

@@ -5,12 +5,12 @@ import { EnvTypes, environment } from '../../constants/constants';
 
 const development = (err: ErrorRequestHandler, _req: Request, res: Response): Response => {
   devLogger('SEND BACK ERROR', JSON.stringify(err));
-  return res.status(404).send(err);
+  return res.status(500).send(err);
 };
 
 const production = (err: ErrorRequestHandler, _req: Request, res: Response): Response => {
   devLogger('SEND BACK ERROR', JSON.stringify(err));
-  return res.status(404).send(err);
+  return res.status(500).send(err);
 };
 
 const middleware = {

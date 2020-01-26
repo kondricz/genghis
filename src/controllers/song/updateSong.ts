@@ -8,7 +8,7 @@ const development = async (_req: Request, res: Response, next: NextFunction): Pr
   const { songID, body } = res.locals;
   devLogger('UPDATE A SINGLE SONG', songID);
   try {
-    const doc = await Song.findOneAndUpdate({ _id: songID }, body);
+    const doc = await Song.findOneAndUpdate({ _id: songID }, body, { new: true });
     if (!doc) {
       return next({
         message: `${songID} could not have been found.`,

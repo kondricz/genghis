@@ -13,11 +13,11 @@ const PORT: { [key: string]: number } = {
   [EnvTypes.PROD]: 8080,
 };
 
-const app = express();
-mongoose.connect(
-  'mongodb+srv://kondricz:TEBxVf3m9kZSGspX@cluster0-hswgq.mongodb.net/test?retryWrites=true&w=majority',
-  { useNewUrlParser: true }
-);
+export const app = express();
+
+if (environment !== EnvTypes.TEST) {
+  mongoose.connect('mongoURL', { useNewUrlParser: true });
+}
 app.use(bodyParser.json());
 
 const withHttpWrapper = (middlewares: express.RequestHandler[]): express.RequestHandler[] => [
